@@ -10,6 +10,8 @@ from sqlalchemy import Sequence, and_, or_
 
 from config import *
 
+import threading
+
 engine = create_engine('mysql+pymysql://{0}:{1}@{2}/{3}'.format(id_db, ps_db, host_db, name_db))
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
@@ -45,35 +47,48 @@ print('app_run!!')
 print(strftime("%Y%m%d", time.localtime()))
 print(strftime("%H%M", time.localtime()))
 
-payload = {
-    'ServiceKey': weather_servicekey,
-    'base_date': strftime("%Y%m%d", time.localtime()),
-    'base_time': strftime("%H%M", time.localtime()),
-    # 'base_time': '1940',
-    'nx': '60',
-    'ny': '127',
-    '_type': 'json'
-}
-res = get('http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastGrib', params=payload)
-dict = json.loads(res.text)
-# print(type(dict))
-# print(dict)
-# print(type(dict['response']['body']['items']['item']))
+end = False
 
-# for i in session.query(Weather).all():
-#     print('ho'+i.category)
 
-if not dict['response']['body']['items'] == '':
-    # session.delete(i for i in session.query(Weather).all())
-    session.query(Weather).delete()
-    for i in dict['response']['body']['items']['item']:
-        # print(i)
-        w = Weather(i['baseDate'], i['baseTime'], i['category'], i['nx'], i['ny'], i['obsrValue'])
+def exec(second=1.0):
+    print('exec')
+    global end
+    if end:
+        return
 
-        session.add(w)
-        session.commit()
+    payload = {
+        'ServiceKey': weather_servicekey,
+        'base_date': strftime("%Y%m%d", time.localtime()),
+        'base_time': strftime("%H%M", time.localtime()),
+        # 'base_time': '1940',
+        'nx': '60',
+        'ny': '127',
+        '_type': 'json'
+    }
+    res = get('http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastGrib', params=payload)
+    dict = json.loads(res.text)
+    # print(type(dict))
+    # print(dict)
+    # print(type(dict['response']['body']['items']['item']))
 
-        # if i['category'] == 'LGT':
-        #     print(i)
-else:
-    print('not yet')
+    # for i in session.query(Weather).all():
+    #     print('ho'+i.category)
+
+    if not dict['response']['body']['items'] == '':
+        # session.delete(i for i in session.query(Weather).all())
+        session.query(Weather).delete()
+        for i in dict['response']['body']['items']['item']:
+            # print(i)
+            w = Weather(i['baseDate'], i['baseTime'], i['category'], i['nx'], i['ny'], i['obsrValue'])
+
+            session.add(w)
+            session.commit()
+
+            # if i['category'] == 'LGT':
+            #     print(i)
+    else:
+        print('not yet')
+
+    threading.Timer(second, exec, [second]).start()
+
+exec(3600.0)
