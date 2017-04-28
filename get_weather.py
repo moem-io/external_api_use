@@ -50,7 +50,7 @@ print(strftime("%H%M", time.localtime()))
 end = False
 
 
-def exec(second=1.0):
+def exec(second=1000):
     print('exec')
     global end
     if end:
@@ -91,4 +91,4 @@ def exec(second=1.0):
 
     threading.Timer(second, exec, [second]).start()
 
-exec(3600.0)
+exec(1200.0)
