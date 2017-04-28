@@ -92,4 +92,4 @@ def exec(second=1000):
     threading.Timer(second, exec, [second]).start()
 
 # exec(1200.0)
-exec(60.0)
+exec(600.0)
