@@ -18,26 +18,27 @@ def get_mise(second=1000):
     if end:
         return
 
+    # print(strftime("%Y%m%d%H%M", time.localtime()))
     res = get('http://openapi.seoul.go.kr:8088/' +
               mise_servicekey + '/' +
               'json' + '/' +
-              'DailyAverageAirQuality' + '/' +
+              'TimeAverageAirQuality' + '/' +
               '1/5' + '/' +
-              '20170604' + '/' +
+              strftime("%Y%m%d", time.localtime()) + '/' +
               '중구'
               )
     # print('res', res)
     dicts = json.loads(res.text)
-    print('dicts', dicts)
+    # print('dicts', dicts)
 
-    if not dicts['DailyAverageAirQuality']['row'] == '':
+    if 'TimeAverageAirQuality' in dicts:
         # session.delete(i for i in session.query(Weather).all())
-        session.query(Weather).delete()
+        session.query(Mise).delete()
 
-        for i in dicts['DailyAverageAirQuality']['row']:
+        for i in dicts['TimeAverageAirQuality']['row']:
             # print(i)
             w = Mise(
-                MSRDT_DE=i['MSRDT_DE'],
+                MSRDT_DE=i['MSRDT'],
                 SO2=i['SO2'],
                 NO2=i['NO2'],
                 PM25=i['PM25'],

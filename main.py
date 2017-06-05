@@ -5,8 +5,8 @@ from app.thread.GetMise import *
 
 print('app_run!!')
 # print(time.gmtime())
-print(strftime("%Y%m%d", time.localtime()))
-print(strftime("%H%M", time.localtime()))
+# print(strftime("%Y%m%d", time.localtime()))
+# print(strftime("%H%M", time.localtime()))
 
 get_weather(600)
 print('get_weather')

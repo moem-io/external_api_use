@@ -13,7 +13,7 @@ end = False
 
 
 def get_weather(second=1000):
-    print('exec')
+    # print('exec')
     global end
     if end:
         return
