@@ -1,5 +1,8 @@
 from app import Base
 from sqlalchemy import Column, Float, String, Integer
+from sqlalchemy.dialects.mysql import TIMESTAMP
+import datetime
+from sqlalchemy.sql.expression import text
 
 
 class Mise(Base):
@@ -14,7 +17,11 @@ class Mise(Base):
     CO = Column(Float)  # 일산화탄소농도(ppm)
     PM10 = Column(Float)  # 미세먼지(㎍/㎥)
     O3 = Column(Float)  # 오존농도(ppm)
-
+    created_date = Column(
+        TIMESTAMP,
+        default=datetime.datetime.utcnow,
+        server_default=text('CURRENT_TIMESTAMP')
+    )
     def __init__(self, MSRDT_DE, SO2, NO2, PM25, MSRSTE_NM, CO, PM10, O3):
         self.MSRDT_DE = MSRDT_DE
         self.SO2 = SO2
