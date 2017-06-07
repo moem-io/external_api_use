@@ -5,9 +5,9 @@ from multiprocessing import Process
 
 
 print('app_run!!')
-# print(time.gmtime())
-# print(strftime("%Y%m%d", time.localtime()))
-# print(strftime("%H%M", time.localtime()))
+print(time.gmtime())
+print(strftime("%Y%m%d", time.localtime()))
+print(strftime("%H%M", time.localtime()))
 
 # get_weather(600)
 weather = Process(target=get_weather, args=(600,))
