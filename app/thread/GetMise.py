@@ -53,7 +53,11 @@ def get_mise(second=1000):
 
             # if i['category'] == 'LGT':
             #     print(i)
+        print('get mise')
+
     else:
         print('not yet')
 
-    threading.Timer(second, get_mise, [second]).start()
+    time.sleep(second)
+
+        # threading.Timer(second, get_mise, [second]).start()

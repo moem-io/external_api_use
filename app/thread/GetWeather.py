@@ -49,7 +49,9 @@ def get_weather(second=1000):
 
             # if i['category'] == 'LGT':
             #     print(i)
+        print('get weather')
     else:
         print('not yet')
 
-    threading.Timer(second, get_weather, [second]).start()
+    time.sleep(second)
+    # threading.Timer(second, get_weather, [second]).start()
