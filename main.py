@@ -15,7 +15,6 @@ weather.start()
 print('get_weather')
 
 # get_mise(600)
-print('get_mise')
 mise = Process(target=get_mise, args=(600,))
 mise.start()
-
+print('get_mise')
