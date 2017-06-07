@@ -20,6 +20,7 @@ class Weather(Base):
         default=datetime.datetime.utcnow,
         server_default=text('CURRENT_TIMESTAMP')
     )
+
     def __init__(self, baseDate, baseTime, category, nx, ny, obsrValue):
         self.baseDate = baseDate
         self.baseTime = baseTime

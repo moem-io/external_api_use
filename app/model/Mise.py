@@ -22,6 +22,7 @@ class Mise(Base):
         default=datetime.datetime.utcnow,
         server_default=text('CURRENT_TIMESTAMP')
     )
+
     def __init__(self, MSRDT_DE, SO2, NO2, PM25, MSRSTE_NM, CO, PM10, O3):
         self.MSRDT_DE = MSRDT_DE
         self.SO2 = SO2

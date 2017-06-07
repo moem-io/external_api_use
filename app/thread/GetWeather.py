@@ -13,45 +13,48 @@ end = False
 
 
 def get_weather(second=1000):
-    # print('exec')
-    global end
-    if end:
-        return
+    while(True):
 
-    payload = {
-        'ServiceKey': weather_servicekey,
-        'base_date': strftime("%Y%m%d", time.localtime()),
-        'base_time': strftime("%H%M", time.localtime()),
-        # 'base_time': '1940',
-        'nx': '60',
-        'ny': '127',
-        '_type': 'json'
-    }
-    res = get('http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastGrib', params=payload)
-    # print('res', res)
-    dicts = json.loads(res.text)
-    # print(type(dict))
-    # print(dicts)
-    # print(type(dict['response']['body']['items']['item']))
+        # print('exec')
+        global end
+        if end:
+            return
 
-    # for i in session.query(Weather).all():
-    #     print('ho'+i.category)
+        payload = {
+            'ServiceKey': weather_servicekey,
+            'base_date': strftime("%Y%m%d", time.localtime()),
+            'base_time': strftime("%H%M", time.localtime()),
+            # 'base_time': '1940',
+            'nx': '60',
+            'ny': '127',
+            '_type': 'json'
+        }
 
-    if not dicts['response']['body']['items'] == '':
-        # session.delete(i for i in session.query(Weather).all())
-        session.query(Weather).delete()
-        for i in dicts['response']['body']['items']['item']:
-            # print(i)
-            w = Weather(i['baseDate'], i['baseTime'], i['category'], i['nx'], i['ny'], i['obsrValue'])
+        res = get('http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastGrib', params=payload)
+        # print('res', res)
+        dicts = json.loads(res.text)
+        # print(type(dict))
+        # print(dicts)
+        # print(type(dict['response']['body']['items']['item']))
 
-            session.add(w)
-            session.commit()
+        # for i in session.query(Weather).all():
+        #     print('ho'+i.category)
 
-            # if i['category'] == 'LGT':
-            #     print(i)
-        print('get weather')
-    else:
-        print('not yet')
+        if not dicts['response']['body']['items'] == '':
+            # session.delete(i for i in session.query(Weather).all())
+            session.query(Weather).delete()
+            for i in dicts['response']['body']['items']['item']:
+                # print(i)
+                w = Weather(i['baseDate'], i['baseTime'], i['category'], i['nx'], i['ny'], i['obsrValue'])
 
-    time.sleep(second)
-    # threading.Timer(second, get_weather, [second]).start()
+                session.add(w)
+                session.commit()
+
+                # if i['category'] == 'LGT':
+                #     print(i)
+            print('get weather')
+        else:
+            print('not yet')
+
+        time.sleep(second)
+        # threading.Timer(second, get_weather, [second]).start()
