@@ -57,7 +57,7 @@ def get_mise(second=1000):
             print('get mise')
 
         else:
-            print('not yet')
+            print('not yet mise')
 
         time.sleep(second)
 
